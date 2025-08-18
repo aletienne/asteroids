@@ -6,6 +6,11 @@ from constants import *
 from player import *
 from circleshape import *
 
+updateable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+
+Player.containers = (updateable, drawable)
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -20,7 +25,9 @@ def main():
                 return
             
         screen.fill("black")
-        player.draw(screen)
+        updateable.update(dt)
+        for i in drawable:
+            i.draw(screen)
         pygame.display.flip()
         dt=Clock.tick(60)/1000
 
