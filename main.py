@@ -3,25 +3,26 @@
 # throughout this file
 import pygame
 from constants import *
+from player import *
+from circleshape import *
 
 def main():
-    print("Starting Asteroids!")
-    print("Screen width: " + str(SCREEN_WIDTH))
-    print("Screen height: " + str(SCREEN_HEIGHT))
-
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    fpsClock = pygame.time.Clock()
+    Clock = pygame.time.Clock()
     pygame.display.set_caption("Asteroids")
     dt=0
+    player=Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            
         screen.fill("black")
+        player.draw(screen)
         pygame.display.flip()
-        dt=fpsClock.tick(60)/1000
+        dt=Clock.tick(60)/1000
 
 if __name__ == "__main__":
     main()
