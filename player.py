@@ -3,6 +3,7 @@ import random
 from constants import *
 from circleshape import CircleShape
 from shot import Shot
+from sound import *
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -170,6 +171,7 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         nose_center = self.position + forward * self.radius * 1.1
         #shot = Shot(self.position.x, self.position.y)
+        sound.shot.play()
         shot = Shot(nose_center.x, nose_center.y)
         #shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         forward = pygame.Vector2(0, 1).rotate(self.rotation)

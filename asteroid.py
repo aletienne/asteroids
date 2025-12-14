@@ -3,6 +3,8 @@ import random
 import math
 from constants import *
 from circleshape import CircleShape
+from sound import *
+
 asteroid_val=[ASTEROID_SCORE_SMALL, ASTEROID_SCORE_MEDIUM, ASTEROID_SCORE_LARGE]
 
 class Asteroid(CircleShape):

@@ -9,6 +9,7 @@ from circleshape import *
 from asteroid import *
 from asteroidfield import *
 from shot import *
+from sound import *
 
 updateable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
@@ -26,6 +27,8 @@ asteroid_field = AsteroidField()
 
 def main():
     pygame.init()
+    pygame.mixer.init()
+    sound.load_sounds()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     Clock = pygame.time.Clock()
     pygame.display.set_caption("Asteroids")
