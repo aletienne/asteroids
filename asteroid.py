@@ -3,7 +3,7 @@ import random
 import math
 from constants import *
 from circleshape import CircleShape
-from sound import *
+import sound
 
 asteroid_val=[ASTEROID_SCORE_SMALL, ASTEROID_SCORE_MEDIUM, ASTEROID_SCORE_LARGE]
 
@@ -50,7 +50,11 @@ class Asteroid(CircleShape):
             asteroid2 = Asteroid(self.position.x, self.position.y, self.radius - ASTEROID_MIN_RADIUS)
             asteroid1.velocity = vector1
             asteroid2.velocity = vector2
+            if sound.audio:
+                sound.bangSmall.play()
             self.kill()
         else:
+            if sound.audio:
+               sound.bangSmall.play()
             self.kill()
             return 
