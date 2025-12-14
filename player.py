@@ -28,7 +28,7 @@ class Player(CircleShape):
         self.blink_elapsed = 0.0
         self.blink_interval = 0.1     # how fast it flickers (seconds)
         self._blink_accum = 0.0
-        self.lives = 3
+        self.lives = 2
         self.score = 0
     
     def triangle(self):
@@ -70,24 +70,20 @@ class Player(CircleShape):
             right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
             # small random flicker in length
             flame_len = self.radius * random.uniform(1.2, 1.8)
-
             # base of flame is slightly behind the ship base
             base_center = self.position - forward * self.radius * 1.1
-
             # two base corners are near the ship's back
             base_left  = base_center - right * 0.4
             base_right = base_center + right * 0.4
-
             # tip goes further back (opposite forward)
             tip = base_center - forward * flame_len
-
             flame_points = [base_left, tip, base_right]
-
-            # thin filled flame
+            # flame
             pygame.draw.polygon(screen, "white", flame_points, 2)
+
         if self.sheild:
             thickness = max(1, int((self.sheild_lifetime + 1) / 1))
-            pygame.draw.circle(screen, "blue", self.position, self.radius+12,thickness*2)
+            pygame.draw.circle(screen, "white", self.position, self.radius+18,thickness*2)
 
     def rotate(self,dt):
         self.rotation += PLAYER_TURN_SPEED * dt
