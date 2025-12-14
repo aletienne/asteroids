@@ -28,6 +28,7 @@ class Player(CircleShape):
         self.blink_elapsed = 0.0
         self.blink_interval = 0.1     # how fast it flickers (seconds)
         self._blink_accum = 0.0
+        self.lives = 3
     
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -48,9 +49,13 @@ class Player(CircleShape):
                 p1 = seg["p1"] + offset
                 p2 = seg["p2"] + offset
                 pygame.draw.line(screen, "white", p1, p2, 2)
+            self.draw_icons(screen, self.lives)
             return
         points = self.triangle()
         #pygame.draw.polygon(screen, "white", points, 2)
+        
+        self.draw_icons(screen, self.lives)
+
         if self.blinking and not self.visible:
             return  # skip drawing this frame
         
@@ -101,6 +106,7 @@ class Player(CircleShape):
                 self.invincible = True
                 self.grace_period = 1
                 self.start_blinking()
+                self.lives -= 1
                 # self.kill()  # remove the player sprite entirely
             return  # skip normal movement & input while exploding
         self.timer -= dt
@@ -216,3 +222,29 @@ class Player(CircleShape):
         self.blink_interval = interval
         self._blink_accum = 0.0
         self.visible = True
+
+    def draw_icons(self, screen, lives):
+        # size + spacing of icons
+        icon_radius = 10
+        spacing = 5
+
+        # where to start (top-right corner)
+        x = SCREEN_WIDTH - 20
+        y = 20
+
+        for i in range(lives):
+            # shift each icon to the left
+            pos = pygame.Vector2(x - i * (icon_radius * 2 + spacing), y)
+
+            # draw a small upward-pointing ship
+            rotation = 0  # pointing up
+            forward = pygame.Vector2(0, -1).rotate(rotation)  # up on screen
+            right = pygame.Vector2(1, 0).rotate(rotation) * icon_radius / 1.5
+
+            a = pos + forward * icon_radius
+            b = pos - forward * icon_radius - right
+            c = pos - forward * icon_radius + right
+
+            pygame.draw.line(screen, "white", a, b, 2)
+            pygame.draw.line(screen, "white", a, c, 2)
+            pygame.draw.line(screen, "white", b, c, 2)

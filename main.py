@@ -22,6 +22,7 @@ Shot.containers = (shots, updateable, drawable)
 asteroid_field = AsteroidField()
 
 
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -35,7 +36,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-            
+
+        
         screen.fill("black")
         updateable.update(dt)
         # check for collision between bullet and asteroids
@@ -56,6 +58,9 @@ def main():
         dt=Clock.tick(60)/1000
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
+            game_play = False
+        if player.lives <= 0:
+            print("Game over!")
             game_play = False
             
     pygame.quit()
