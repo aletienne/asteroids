@@ -9,12 +9,11 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
         self.points = self.generate_asteroid_points(radius)
 
-    def generate_asteroid_points(self, radius, irregularity=0.1, point_count=24):
-        """
-        radius: base radius
-        irregularity: how jagged (0.0 = circle, 0.5 = pretty lumpy)
-        point_count: number of vertices
-        """
+    def generate_asteroid_points(self, radius, irregularity=0.1, point_count=6):
+        # radius: base radius
+        # irregularity: how jagged (0.0 = circle, 0.5 = pretty lumpy)
+        # point_count: number of vertices
+        
         points = []
         for i in range(point_count):
             angle = (2 * math.pi / point_count) * i
@@ -30,7 +29,8 @@ class Asteroid(CircleShape):
         cx, cy = self.position
         # shift local points to screen coordinates
         world_points = [(cx + x, cy + y) for (x, y) in self.points]
-        pygame.draw.polygon(screen, "white", world_points, 2)
+        thickness = max(1, int(self.radius / 20))
+        pygame.draw.polygon(screen, "white", world_points, thickness)
         #pygame.draw.circle(screen, "white", self.position, self.radius, 2)
 
     def update(self, dt):

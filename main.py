@@ -29,8 +29,9 @@ def main():
     pygame.display.set_caption("Asteroids")
     dt=0
     player=Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+    game_play = True
 
-    while True:
+    while game_play:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -45,13 +46,19 @@ def main():
                     j.kill()
         # check for collision between player and asteroids
         for i in asteroids:
-            if player.collision(i):
-                print("Game over!")
-                sys.exit(0)
+            if player.collision(i) and not player.sheild and not player.invincible:
+                player.start_explosion()
+                #print("Game over!")
+                #sys.exit(0)
         for i in drawable:
             i.draw(screen)
         pygame.display.flip()
         dt=Clock.tick(60)/1000
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            game_play = False
+            
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
