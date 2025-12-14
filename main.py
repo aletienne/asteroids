@@ -23,6 +23,7 @@ asteroid_field = AsteroidField()
 
 
 
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -31,12 +32,14 @@ def main():
     dt=0
     player=Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
     game_play = True
+    font = pygame.font.SysFont("DejaVu Sans Mono", 32)
+
 
     while game_play:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-
+        
         
         screen.fill("black")
         updateable.update(dt)
@@ -44,6 +47,7 @@ def main():
         for i in asteroids:
             for j in shots:
                 if i.collision(j):
+                    player.score += i.score
                     i.split()
                     j.kill()
         # check for collision between player and asteroids
@@ -54,6 +58,7 @@ def main():
                 #sys.exit(0)
         for i in drawable:
             i.draw(screen)
+        draw_score(screen, font, player.score)
         pygame.display.flip()
         dt=Clock.tick(60)/1000
         keys = pygame.key.get_pressed()
@@ -64,6 +69,11 @@ def main():
             game_play = False
             
     pygame.quit()
+
+def draw_score(screen, font, score):
+    text = f"{score}"
+    text_surf = font.render(text, True, "white")  # anti-aliased, white text
+    screen.blit(text_surf, (10, 10))             # position (x=10, y=10)
 
 if __name__ == "__main__":
     main()

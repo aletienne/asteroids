@@ -3,11 +3,13 @@ import random
 import math
 from constants import *
 from circleshape import CircleShape
+asteroid_val=[ASTEROID_SCORE_SMALL, ASTEROID_SCORE_MEDIUM, ASTEROID_SCORE_LARGE]
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         self.points = self.generate_asteroid_points(radius)
+        self.score = asteroid_val[max(0, int(self.radius / 20)-1)]
 
     def generate_asteroid_points(self, radius, irregularity=0.1, point_count=6):
         # radius: base radius

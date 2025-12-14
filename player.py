@@ -29,6 +29,7 @@ class Player(CircleShape):
         self.blink_interval = 0.1     # how fast it flickers (seconds)
         self._blink_accum = 0.0
         self.lives = 3
+        self.score = 0
     
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
