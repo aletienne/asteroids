@@ -3,7 +3,7 @@ import random
 from constants import *
 from circleshape import CircleShape
 from shot import Shot
-from sound import *
+import sound
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -31,6 +31,7 @@ class Player(CircleShape):
         self._blink_accum = 0.0
         self.lives = 2
         self.score = 0
+        self.pause = False
     
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -50,13 +51,10 @@ class Player(CircleShape):
                 offset = seg["dir"] * seg["speed"] * t
                 p1 = seg["p1"] + offset
                 p2 = seg["p2"] + offset
-                pygame.draw.line(screen, "white", p1, p2, 2)
-            self.draw_icons(screen, self.lives)
+                pygame.draw.line(screen, "white", p1, p2, 2)   
             return
         points = self.triangle()
         #pygame.draw.polygon(screen, "white", points, 2)
-        
-        self.draw_icons(screen, self.lives)
 
         if self.blinking and not self.visible:
             return  # skip drawing this frame
@@ -80,6 +78,8 @@ class Player(CircleShape):
             tip = base_center - forward * flame_len
             flame_points = [base_left, tip, base_right]
             # flame
+            if sound.audio:
+                sound.thrust.play()
             pygame.draw.polygon(screen, "white", flame_points, 2)
 
         if self.sheild:
@@ -151,7 +151,8 @@ class Player(CircleShape):
             self.sheild = False
         if keys[pygame.K_SPACE]:
             self.shoot()
-        
+        if keys[pygame.K_s]:
+            sound.audio = not sound.audio
         
         if self.sheild == False and self.sheild_timeoute > 0:
             self.sheild_timeoute -= dt
@@ -171,7 +172,8 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         nose_center = self.position + forward * self.radius * 1.1
         #shot = Shot(self.position.x, self.position.y)
-        sound.shot.play()
+        if sound.audio:
+            sound.fire.play()
         shot = Shot(nose_center.x, nose_center.y)
         #shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -185,6 +187,9 @@ class Player(CircleShape):
         self.exploding = True
         self.explosion_time = 0.0
         self.explosion_segments.clear()
+
+        if sound.audio:
+            sound.bangLarge.play() 
 
         points = self.triangle()  # [a, b, c, d, e]
 
@@ -222,28 +227,3 @@ class Player(CircleShape):
         self._blink_accum = 0.0
         self.visible = True
 
-    def draw_icons(self, screen, lives):
-        # size + spacing of icons
-        icon_radius = 10
-        spacing = 5
-
-        # where to start (top-right corner)
-        x = SCREEN_WIDTH - 20
-        y = 20
-
-        for i in range(lives):
-            # shift each icon to the left
-            pos = pygame.Vector2(x - i * (icon_radius * 2 + spacing), y)
-
-            # draw a small upward-pointing ship
-            rotation = 0  # pointing up
-            forward = pygame.Vector2(0, -1).rotate(rotation)  # up on screen
-            right = pygame.Vector2(1, 0).rotate(rotation) * icon_radius / 1.5
-
-            a = pos + forward * icon_radius
-            b = pos - forward * icon_radius - right
-            c = pos - forward * icon_radius + right
-
-            pygame.draw.line(screen, "white", a, b, 2)
-            pygame.draw.line(screen, "white", a, c, 2)
-            pygame.draw.line(screen, "white", b, c, 2)
