@@ -12,10 +12,10 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
         self.points = self.generate_asteroid_points(radius)
         self.score = asteroid_val[max(0, int(self.radius / 20)-1)]
-        self.rate = random.uniform(-1,1)
+        self.rate = random.uniform(-2,2)
         self.angle = 0
 
-    def generate_asteroid_points(self, radius, irregularity=0.1, point_count=6):
+    def generate_asteroid_points(self, radius, irregularity=0.3, point_count=12):
         # radius: base radius
         # irregularity: how jagged (0.0 = circle, 0.5 = pretty lumpy)
         # point_count: number of vertices

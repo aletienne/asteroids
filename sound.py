@@ -1,7 +1,7 @@
 import pygame
 
 fire = thrust = bangSmall = bangLarge = extraShip = None;
-audio = False;
+audio = True;
 
 def load_sounds():
     global fire, thrust, bangSmall, bangLarge, extraShip
