@@ -12,6 +12,8 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
         self.points = self.generate_asteroid_points(radius)
         self.score = asteroid_val[max(0, int(self.radius / 20)-1)]
+        self.rate = random.uniform(-1,1)
+        self.angle = 0
 
     def generate_asteroid_points(self, radius, irregularity=0.1, point_count=6):
         # radius: base radius
@@ -33,8 +35,11 @@ class Asteroid(CircleShape):
         cx, cy = self.position
         # shift local points to screen coordinates
         world_points = [(cx + x, cy + y) for (x, y) in self.points]
+        self.angle += self.rate
+        self.angle %= 360
+        rotated_points = self.rotate(world_points, self.position, self.angle)
         thickness = max(1, int(self.radius / 20))
-        pygame.draw.polygon(screen, "white", world_points, thickness)
+        pygame.draw.polygon(screen, "white", rotated_points, thickness)
         #pygame.draw.circle(screen, "white", self.position, self.radius, 2)
 
     def update(self, dt):
@@ -57,4 +62,19 @@ class Asteroid(CircleShape):
             if sound.audio:
                sound.bangSmall.play()
             self.kill()
-            return 
+            return
+
+    def rotate(self, points, pivot, angle):
+        # Rotates a list of points (tuples/lists) around a given pivot point by an angle in degrees.
+        # Convert the pivot to a Vector2
+        pp = pygame.math.Vector2(pivot)
+        rotated_points = []
+        for point in points:
+            # Calculate the vector from the pivot to the point
+            vector = pygame.math.Vector2(point) - pp
+            # Rotate the vector
+            rotated_vector = vector.rotate(angle)
+            # Add the pivot back to the rotated vector to get the final position
+            rotated_point = rotated_vector + pp
+            rotated_points.append((rotated_point.x, rotated_point.y))
+        return rotated_points
