@@ -105,6 +105,7 @@ class Player(CircleShape):
                 self.grace_period = 1
                 self.start_blinking()
                 self.lives -= 1
+                self.sheild_timeoute = 0
                 # self.kill()  # remove the player sprite entirely
             return  # skip normal movement & input while exploding
         self.timer -= dt
