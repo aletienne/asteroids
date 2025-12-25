@@ -28,9 +28,10 @@ asteroid_field = AsteroidField()
 
 def main():
     pygame.init()
-    pygame.mixer.init()
-    pygame.mixer.set_num_channels(16)
-    sound.load_sounds()
+    if sound.audio :
+        pygame.mixer.init()
+        pygame.mixer.set_num_channels(16)
+        sound.load_sounds()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     Clock = pygame.time.Clock()
     pygame.display.set_caption("Asteroids")
