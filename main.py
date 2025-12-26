@@ -28,8 +28,7 @@ asteroid_field = AsteroidField()
 
 def main():
     pygame.init()
-    if sound.audio :
-        pygame.mixer.init()
+    if sound.audio and pygame.mixer.get_init() is not None:
         pygame.mixer.set_num_channels(16)
         sound.load_sounds()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
